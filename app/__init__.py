@@ -2,12 +2,16 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
+from dotenv import load_dotenv
+#from .scheduler import start_scheduler
 
 db = SQLAlchemy()
 migrate = Migrate()
 login_manager = LoginManager()
 
 def create_app():
+    load_dotenv()
+
     app = Flask(__name__)
     app.config.from_object("config.Config")
 
@@ -22,5 +26,8 @@ def create_app():
 
     app.register_blueprint(main_bp)
     app.register_blueprint(auth_bp)
+
+    # with app.app_context():
+    #     start_scheduler(app)
 
     return app
